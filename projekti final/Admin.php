@@ -5,6 +5,7 @@
 <head>
     <title>Library Management System</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+    
     <style>
         .container {
             max-width: 1200px;
@@ -31,13 +32,12 @@
     <div class="container mt-4">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" id="books-tab" data-bs-toggle="tab" href="#books">Books</a>
+                <a class="nav-link active" id="books-tab" data-bs-toggle="tab" href="#books-tab">Books</a>
+            </li>
+           
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="books-tab" data-bs-toggle="tab" href="#book-copies">Book Copies</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="borrowers-tab" data-bs-toggle="tab" href="#borrowers">Borrowers</a>
+                <a class="nav-link " id="borrower-tab" data-bs-toggle="tab" href="#borrower-tabs">Borrowers</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="categories-tab" data-bs-toggle="tab" href="#categories">Categories</a>
@@ -52,7 +52,7 @@
         
                     
     <div class="tab-content mt-4">
-        <div class="tab-pane fade show active" id="books">
+        <div class="tab-pane fade show active" id="books-tab">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5>Books</h5>
@@ -132,13 +132,13 @@
         </div>
         <!-- Similar structure for other tabs -->
         <!-- ... -->
-<div class="tab-pane fade" id="borrowers">
-    <div class="card">
-        <div class="card-header d-flex justify-content-between">
+     <div class="tab-pane fade" id="borrower-tab">
+             <div class="card">
+            <div class="card-header d-flex justify-content-between">
             <h5>Borrowers</h5>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBorrowerModal">Add Borrower</button>
-        </div>
-        <div class="card-body">
+             </div>
+            <div class="card-body">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -148,10 +148,12 @@
                         <th>Phone</th>
                         <th>Action</th>
                         <th>Email</th>
+                        <th>Password</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php
+                    
                      $conn = new mysqli($host, $user, $pass, $db);
 
                      // Check connection
@@ -164,75 +166,39 @@
 
                     if ($result->num_rows > 0) {
                         while($borrower = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $borrower['borrower_id'] . "</td>";
-                            echo "<td>" . $borrower['bfirst_name'] . "</td>";
-                            echo "<td>" . $borrower['blast_name'] . "</td>";
-                            echo "<td>" . $borrower['baddress'] . "</td>";
-                            echo "<td>" . $borrower['bphone'] . "</td>";
-                            echo "<td>" . $borrower['bemail'] . "</td>";
-                           
-                            echo "<td>";
-                            echo "<a href='edit_borrower.php?id=" . $borrower['id'] . "' class='btn btn-sm btn-primary'>Edit</a> ";
-                            echo "<a href='delete_borrower.php?id=" . $borrower['id'] . "' class='btn btn-sm btn-danger'>Delete</a>";
-                            echo "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='5'>No borrowers found</td></tr>";
-                    }
-                    ?>
+                            echo "
+                            <tr>
+                           <td>  $borrower[borrower_id]  </td>
+                       <td> $borrower[bfirstName]</td>
+                            <td> $borrower[blastName]</td>
+                            <td>$borrower[baddress] </td>
+                            <td>$borrower[bphone] </td>
+                            <td> $borrower[bemail]  </td>
+                            <td>$borrower[bpassword] </td>
+                            <td>
+                            <a class='btn btn-primary btn-sm' href='/ProjektiFinal/edit_borrower.php?id=$borrower[borrower_id]' > Edit </a>
+                         <a class='btn btn-danger btn-sm' href='/ProjektiFinal/delete_borrower.php?id=$borrower[borrower_id]' > Delete </a>
+                                        </td>
+                                       </tr>
+                                       ";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='9'>No borrowers found</td></tr>";
+                                }
+                                
+                                // Close the database connection
+                                $conn->close();
+                          
+             
+                            ?>
+                     
+                   
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-<div class="tab-pane fade" id="book-copies">
-    <div class="card">
-        <div class="card-header d-flex justify-content-between">
-            <h5>Book Copies</h5>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#kCopyModal">Add Book Copy</button>
-        </div>
-        <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Copy ID</th>
-                        <th>Book ID</th>
-                        <th>Shelf ID</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // Fetch book copies from the database
-                    $sql = "SELECT * FROM book_copies"; 
-                    $result = $conn->query($sql);
 
-                    // Check if there are any book copies
-                    if ($result->num_rows > 0) {
-                        // Output data of each row
-                        
-                        while($copy = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $copy['Copy_id'] . "</td>";
-                            echo "<td>" . $copy['book_id'] . "</td>";
-                            echo "<td>" . $copy['shelf_id'] . "</td>";
-                            echo "<td>";
-                            echo "<a href='edit_copy.php?id=" . $copy['Copy_id'] . "' class='btn btn-sm btn-primary'>Edit</a>";
-                            echo "<a href='delete_copy.php?id=" . $copy['Copy_id'] . "' class='btn btn-sm btn-danger'>Delete</a>";
-                            echo "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='5'>No book copies found</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
 
 <div class="tab-pane fade" id="categories">
     <div class="card">
@@ -324,7 +290,7 @@
 <div class="tab-pane fade" id="staff">
     <div class="card">
         <div class="card-header d-flex justify-content-between">
-            <h5>Steaff</h5>
+            <h5>Staff</h5>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStaffModal">Add Staff</button>
         </div>
         <div class="card-body">

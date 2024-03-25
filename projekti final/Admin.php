@@ -1,11 +1,7 @@
-
-
-
 <html>
 <head>
     <title>Library Management System</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
-    
     <style>
         .container {
             max-width: 1200px;
@@ -19,11 +15,9 @@
             margin-bottom: 20px;
         }
     </style>
-   
-  </body>
 </head>
 <body>
-    <!-- HTML code -->
+    <!-- Your HTML code -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">Library Management System</a>
@@ -32,12 +26,13 @@
     <div class="container mt-4">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a class="nav-link active" id="books-tab" data-bs-toggle="tab" href="#books-tab">Books</a>
-            </li>
-           
+                <a class="nav-link active" id="books-tab" data-bs-toggle="tab" href="#books">Books</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link " id="borrower-tab" data-bs-toggle="tab" href="#borrower-tabs">Borrowers</a>
+                <a class="nav-link" id="book-copies-tab" data-bs-toggle="tab" href="#book_copies">Book Copies</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="borrowers-tab" data-bs-toggle="tab" href="#borrowers">Borrowers</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" id="categories-tab" data-bs-toggle="tab" href="#categories">Categories</a>
@@ -52,11 +47,11 @@
         
                     
     <div class="tab-content mt-4">
-        <div class="tab-pane fade show active" id="books-tab">
+        <div class="tab-pane fade show active" id="books">
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5>Books</h5>
-                    <a class="btn btn-primary" href="create_book.php" type="button">Add Book</a>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">Add Book</button>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">
@@ -97,23 +92,20 @@
                                 if ($result->num_rows > 0) {
                                     // Output data of each row
                                     while($books = $result->fetch_assoc()) {
-                                        echo "
-                                        <tr>
-                                      <td> $books[id]</td>
-                                      <td> $books[title]</td>
-                                       <td> $books[author] </td>
-                                         <td> $books[category]</td>
-                                       <td> $books[isbn]</td>
-                                         <td> $books[publisher]</td>
-                                       <td> $books[publication_date]</td>
-                                        <td> $books[price]</td>
-                                         <td>
-                                       
-                                       <a class='btn btn-primary btn-sm' href='/ProjektiFinal/edit_book.php?id=$books[id]' > Edit </a>
-                                       <a class='btn btn-danger btn-sm' href='/ProjektiFinal/delete_book.php?id=$books[id]' > Delete </a>
-                                        </td>
-                                       </tr>
-                                       ";
+                                        echo "<tr>";
+                                        echo "<td>" . $books['id'] . "</td>";
+                                        echo "<td>" . $books['title'] . "</td>";
+                                        echo "<td>" . $books['author'] . "</td>"; // Now 'author' refers to the author name
+                                        echo "<td>" . $books['category'] . "</td>"; // Now 'category' refers to the category name
+                                        echo "<td>" . $books['isbn'] . "</td>";
+                                        echo "<td>" . $books['publisher'] . "</td>";
+                                        echo "<td>" . $books['publication_date'] . "</td>";
+                                        echo "<td>" . $books['price'] . "</td>";
+                                        echo "<td>";
+                                        echo "<a href='edit_book.php?id=" . $books['id'] . "' class='btn btn-sm btn-primary'>Edit</a>";
+                                        echo "<a href='delete_book.php?id=" . $books['id'] . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                        echo "</td>";
+                                        echo "</tr>";
                                     }
                                 } else {
                                     echo "<tr><td colspan='9'>No books found</td></tr>";
@@ -124,15 +116,14 @@
                           
              
                             ?>
-                          
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        
         <!-- Similar structure for other tabs -->
-        <!-- ... -->
-     <div class="tab-pane fade" id="borrower-tab">
+        <div class="tab-pane fade" id="borrowers">
              <div class="card">
             <div class="card-header d-flex justify-content-between">
             <h5>Borrowers</h5>
@@ -166,189 +157,289 @@
 
                     if ($result->num_rows > 0) {
                         while($borrower = $result->fetch_assoc()) {
-                            echo "
-                            <tr>
-                           <td>  $borrower[borrower_id]  </td>
-                       <td> $borrower[bfirstName]</td>
-                            <td> $borrower[blastName]</td>
-                            <td>$borrower[baddress] </td>
-                            <td>$borrower[bphone] </td>
-                            <td> $borrower[bemail]  </td>
-                            <td>$borrower[bpassword] </td>
-                            <td>
-                            <a class='btn btn-primary btn-sm' href='/ProjektiFinal/edit_borrower.php?id=$borrower[borrower_id]' > Edit </a>
-                         <a class='btn btn-danger btn-sm' href='/ProjektiFinal/delete_borrower.php?id=$borrower[borrower_id]' > Delete </a>
-                                        </td>
-                                       </tr>
-                                       ";
+                           
+                                    echo "<tr>";
+                                    echo "<td>" . $borrower['borrower_id'] . "</td>";
+                                    echo "<td>" . $borrower['bfirstName'] . "</td>";
+                                    echo "<td>" . $borrower['blastName'] . "</td>"; // Now 'author' refers to the author name
+                                    echo "<td>" . $borrower['baddress'] . "</td>"; // Now 'category' refers to the category name
+                                    echo "<td>" . $borrower['bphone'] . "</td>";
+                                    echo "<td>" . $borrower['bemail'] . "</td>";
+                                    echo "<td>" . $borrower['bpassword'] . "</td>";
+                                   
+                                    echo "<td>";
+                                    echo "<a href='edit_book.php?id="  . "' class='btn btn-sm btn-primary'>Edit</a>";
+                                    echo "<a href='delete_book.php?id="  . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                    echo "</td>";
+                                    echo "</tr>";
+                        
+                          
+                        
                                     }
                                 } else {
-                                    echo "<tr><td colspan='9'>No borrowers found</td></tr>";
+                                    echo "<tr><td colspan='2'>No borrowers found</td></tr>";
                                 }
                                 
                                 // Close the database connection
                                 $conn->close();
-                          
-             
-                            ?>
-                     
-                   
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
 
+<!-- Similar structure for other tabs -->
 
-<div class="tab-pane fade" id="categories">
-    <div class="card">
-        <div class="card-header d-flex justify-content-between">
-            <h5>Categories</h5>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Add Category</button>
-        </div>
-        <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php
-                    // Assuming $conn is your database connection
-                    $sql = "SELECT * FROM categories";
-                    $result = $conn->query($sql);
-
-                    if ($result->num_rows > 0) {
-                        while($category = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $category['id'] . "</td>";
-                            echo "<td>" . $category['name'] . "</td>";
-                            echo "<td>";
-                            echo "<a href='edit_category.php?id=" . $category['id'] . "' class='btn btn-sm btn-primary'>Edit</a> ";
-                            echo "<a href='delete_category.php?id=" . $category['id'] . "' class='btn btn-sm btn-danger'>Delete</a>";
-                            echo "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='3'>No categories found</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-
-<div class="tab-pane fade" id="shelves">
-    <div class="card">
-        <div class="card-header d-flex justify-content-between">
+    <div class="tab-pane fade" id="shelves">
+             <div class="card">
+            <div class="card-header d-flex justify-content-between">
             <h5>Shelves</h5>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addShelfModal">Add Shelf</button>
-        </div>
-        <div class="card-body">
+             </div>
+            <div class="card-body">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Shelf id</th>
                         <th>Name</th>
+                        
                         <th>Action</th>
+                       
                     </tr>
                 </thead>
                 <tbody>
                     <?php
+                    
+                     $conn = new mysqli($host, $user, $pass, $db);
+
+                     // Check connection
+                     if ($conn->connect_error) {
+                         die("Connection failed: " . $conn->connect_error);
+                     }
                     // Assuming $conn is your database connection
                     $sql = "SELECT * FROM shelves";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
                         while($shelves = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $shelves['id'] . "</td>";
-                            echo "<td>" . $shelves['name'] . "</td>";
-                            echo "<td>";
+                           
+                                    echo "<tr>";
+                                    echo "<td>" . $shelves['shelf_id'] . "</td>";
+                                    echo "<td>" . $shelves['shelf_name'] . "</td>";
+                                   
+                                   
+                                    echo "<td>";
+                                    echo "<a href='edit_book.php?id="  . "' class='btn btn-sm btn-primary'>Edit</a>";
+                                    echo "<a href='delete_book.php?id="  . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                    echo "</td>";
+                                    echo "</tr>";
                         
-                            echo "<a href='edit_shelves.php?id=" . $shelves['id'] . "' class='btn btn-sm btn-primary'>Edit</a> ";
-                            echo "<a href='delete_shelves.php?id=" . $shelves['id'] . "' class='btn btn-sm btn-danger'>Delete</a>";
-                            echo "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='3'>No shelves found</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
+                          
+                        
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='2'>No borrowers found</td></tr>";
+                                }
+                                
+                                // Close the database connection
+                                $conn->close();
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+   
 
-
-<div class="tab-pane fade" id="staff">
-    <div class="card">
-        <div class="card-header d-flex justify-content-between">
+<!-- Similar structure for other tabs -->
+    <div class="tab-pane fade" id="staff">
+             <div class="card">
+            <div class="card-header d-flex justify-content-between">
             <h5>Staff</h5>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStaffModal">Add Staff</button>
-        </div>
-        <div class="card-body">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBorrowerModal">Add Borrower</button>
+             </div>
+            <div class="card-body">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                    
+                    <th>Staff ID</th>
+                       
                         <th>First Name</th>
-                        <th>Last Name</th>
+                        <th>Last name</th>
+                        <th>Hire date</th>
                         <th>Address</th>
                         <th>Phone</th>
                         <th>Email</th>
-                        <th>hire_date</th>
-                        <th>salary</th>
+                        <th>Salary</th>
+                       
                         <th>Action</th>
-                        
                     </tr>
                 </thead>
                 <tbody>
                     <?php
+                    
+                     $conn = new mysqli($host, $user, $pass, $db);
+
+                     // Check connection
+                     if ($conn->connect_error) {
+                         die("Connection failed: " . $conn->connect_error);
+                     }
                     // Assuming $conn is your database connection
                     $sql = "SELECT * FROM staff";
                     $result = $conn->query($sql);
 
                     if ($result->num_rows > 0) {
                         while($staff = $result->fetch_assoc()) {
-                            echo "<tr>";
-                            echo "<td>" . $staff['Staff_id'] . "</td>";
-                            echo "<td>" . $staff['first_name'] . "</td>";
-                            echo "<td>" . $staff['last_name'] . "</td>";
-                            echo "<td>" . $staff['address'] . "</td>";
-                            echo "<td>" . $staff['phone'] . "</td>";
-                            echo "<td>" . $staff['email'] . "</td>";
-                            echo "<td>" . $staff['hire_date'] . "</td>";
-                            echo "<td>" . $staff['salary'] . "</td>";
                            
-                            echo "<td>" ;
-                            echo "<a href='edit_staff.php?id=" . $staff['Staff_id'] . "' class='btn btn-sm btn-primary'>Edit</a> ";
-                            echo "<a href='delete_staff.php?id=" . $staff['Staff_id'] . "' class='btn btn-sm btn-danger'>Delete</a>";
-                            echo "</td>";
-                            echo "</tr>";
-                        }
-                    } else {
-                        echo "<tr><td colspan='5'>No staff found</td></tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<!-- ... -->
-    </div>
+                                    echo "<tr>";
+                                    echo "<td>" . $staff['staff_id'] . "</td>";
+                                    echo "<td>" . $staff['sfirstName'] . "</td>";
+                                    echo "<td>" . $staff['slastName'] . "</td>"; // Now 'author' refers to the author name
+                                    echo "<td>" . $staff['shireDate'] . "</td>"; // Now 'category' refers to the category name
+                                    echo "<td>" . $staff['saddress'] . "</td>";
+                                    echo "<td>" . $staff['sphone'] . "</td>";
+                                    echo "<td>" . $staff['semail'] . "</td>";
+                                    echo "<td>" . $staff['salary'] . "</td>";
+                                    
+                                    echo "<td>";
+                                  
+                                    echo "<a href='edit_book.php?id="  . "' class='btn btn-sm btn-primary'>Edit</a>";
+                                    echo "<a href='delete_book.php?id="  . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                    echo "</td>";
+                                    echo "</tr>";
+                        
+                          
+                        
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='3'>No borrowers found</td></tr>";
+                                }
+                                
+                                // Close the database connection
+                                $conn->close();
+                          
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+ <!-- Similar structure for other tabs -->
+ <div class="tab-pane fade" id="categories">
+             <div class="card">
+            <div class="card-header d-flex justify-content-between">
+            <h5>Categories</h5>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Add Category</button>
+             </div>
+            <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                          <th>ID</th>
+                        <th>Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    
+                     $conn = new mysqli($host, $user, $pass, $db);
 
-    
+                     // Check connection
+                     if ($conn->connect_error) {
+                         die("Connection failed: " . $conn->connect_error);
+                     }
+                    // Assuming $conn is your database connection
+                    $sql = "SELECT * FROM categories";
+                    $result = $conn->query($sql);
 
+                    if ($result->num_rows > 0) {
+                        while($category = $result->fetch_assoc()) {
+                                    echo "<tr>";
+                                    echo "<td>" . $category['category_id'] . "</td>";
+ 				                    echo "<td>" . $category['category_name'] . "</td>";
+                                    echo "<td>";
+                                    echo "<a href='edit_book.php?id="  . "' class='btn btn-sm btn-primary'>Edit</a>";
+                                    echo "<a href='delete_book.php?id="  . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                    echo "</td>";
+                                    echo "</tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='1'>No Categories found</td></tr>";
+                                }
+                                
+                                // Close the database connection
+                                $conn->close();
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+          
+<div class="tab-pane fade" id="book_copies">
+             <div class="card">
+            <div class="card-header d-flex justify-content-between">
+            <h5>Book Copies</h5>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookCopy">Add Copy</button>
+             </div>
+            <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                          <th>Copy</th>
+                        <th>Book ID</th>
+                      
+                        <th> Condition</th>
+                        <th> Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    
+                     $conn = new mysqli($host, $user, $pass, $db);
+
+                     // Check connection
+                     if ($conn->connect_error) {
+                         die("Connection failed: " . $conn->connect_error);
+                     }
+                    // Assuming $conn is your database connection
+                    $sql = "SELECT * FROM book_copies";
+                    $result = $conn->query($sql);
+
+                    if ($result->num_rows > 0) {
+                        while($book_copies = $result->fetch_assoc()) {
+                                    echo "<tr>";
+                                    echo "<td>" . $book_copies['copy_id'] . "</td>";
+ 				                    echo "<td>" . $book_copies['book_id'] . "</td>";
+                                     echo "<td>" . $book_copies['condition_of_book'] . "</td>";
+                                     echo "<td>" . $book_copies['status'] . "</td>";
+                                    echo "<td>";
+                                    echo "<a href='edit_book.php?id="  . "' class='btn btn-sm btn-primary'>Edit</a>";
+                                    echo "<a href='delete_book.php?id="  . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                    echo "</td>";
+                                    echo "</tr>";
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='1'>No Categories found</td></tr>";
+                                }
+                                
+                                // Close the database connection
+                                $conn->close();
+                                ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+    <!-- Add Book Modal -->
+    <!-- Your HTML code -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>
 </body>
-</html>
+</html> 

@@ -12,87 +12,69 @@ if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
 
-
-   
-
-$Book_id ="";
- 
-$Title= "";
-$Author= "";
-$Category= "";
-$ISBN= "";
-$Publisher= "";
-$Price="";
-$Publication_date="";
-
-$errorMessage ="";
-
-
+$id = "";
+$errorMessage = "";
 $succesMessage = "";
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-// GET method - show the data of the book
-    if ( !isset($_GET["id"])) { header("location:/projekti final/Admin.php");
-    exit;
-    
+    // GET method - retrieve the book ID from the URL parameters
+    if (!isset($_GET["id"])) {
+        // Redirect if the book ID is not provided in the URL
+        header("location: /projekti%20final/Admin.php");
+        exit;
     }
 
+    // Retrieve the book ID from the URL parameters
+    $id = $_GET["id"];
 
-$Book_id = $_GET["id"];
+    // Fetch the book details from the database
+    $sql = "SELECT * FROM books WHERE id = $id";
+    $result = $connection->query($sql);
+    $book = $result->fetch_assoc();
 
-
-
-$sql ="SELECT * FROM books WHERE id=$id";
-$result = $connection->query($sql);
-$books =$result->fetch_assoc();
-
-
-
-if (!$books) {
-    header("location:projekti final/Admin.php");
-    exit;
-}
-
-$Title = $books["title"];
-$Author = $books["author"];
-$Category = $books["category"];
-$ISBN = $books["isbn"];
-$Publisher = $books["publisher"];
-$Price = $books["price"];
-$Publication_date = $books["publication_date"];
-}
-else{
-//Post method - Update the book data
-$id =$_POST["id"];
-$Title = $_POST["title"];
-$Author = $_POST["author"];
-$Category = $_POST["category"];
-$ISBN = $_POST["isbn"];
-$Publisher = $_POST["publisher"];
-$Price = $_POST["price"];
-$Publication_date = $_POST["publication_date"];
-
-do{
-    if (empty($id) ||empty($Title) || empty($Author) || empty($Category) || empty($ISBN) || empty($Publisher)|| empty($Price) || empty($Publication_date) ){
-        $errorMessage = "All the fields are requred";
-        break;
+    if (!$book) {
+        // Redirect if the book with the specified ID is not found
+        header("location:projekti%20final/Admin.php");
+        exit;
     }
 
-$sql = "UPDATE books " . 
-        "SET title = '$Title', author = '$Author', category = '$Category', isbn = '$ISBN', publisher = '$Publisher', publication_date = '$Publication_date' " . 
-        "WHERE id = $id";
-        $result = $connection-> query($sql); 
-  if (!$result)     {$errorMessage = "Invalid query: ". $connection->error; 
-        break;
-  }
-$succesMessage = "Book Updated Correctly";
+    // Assign retrieved values to variables
+    $id = $book["id"];
+    $Title = $book["title"];
+    $Author = $book["author"];
+    $Category = $book["category"];
+    $ISBN = $book["isbn"];
+    $Publisher = $book["publisher"];
+    $Price = $book["price"];
+    $Publication_date = $book["publication_date"];
+} elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    // POST method - Update the book data
+    $id = $_POST["id"];
+    $Title = $_POST["title"];
+    $Author = $_POST["author"];
+    $Category = $_POST["category"];
+    $ISBN = $_POST["isbn"];
+    $Publisher = $_POST["publisher"];
+    $Price = $_POST["price"];
+    $Publication_date = $_POST["publication_date"];
 
-header("location:projekti final/Admin.php");
-
-} while (true);
+    // Validate form data
+    if (empty($id) || empty($Title) || empty($Author) || empty($Category) || empty($ISBN) || empty($Publisher) || empty($Price) || empty($Publication_date)) {
+        $errorMessage = "All the fields are required";
+    } else {
+        // Update the book data in the database
+        $sql = "UPDATE books SET title = '$Title', author = '$Author', category = '$Category', isbn = '$ISBN', publisher = '$Publisher', price = '$Price', publication_date = '$Publication_date' WHERE id = $id";
+        $result = $connection->query($sql);
+        if (!$result) {
+            $errorMessage = "Invalid query: " . $connection->error;
+        } else {
+            $succesMessage = "Book Updated Correctly";
+            header("location: Admin.php#
+            ");
+            exit;
+        }
+    }
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,26 +84,20 @@ header("location:projekti final/Admin.php");
     <title>Edit</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-  </body>
 </head>
 <body>
-    <div class= "container my-5">
+    <div class="container my-5">
         <h2>Edit Book</h2>
-       
-       
-       
         <?php 
-       if ( !empty($errorMessage) ) {
-    echo "
-    <div class= 'alert alert-warning alert-dismissible fade show' role='alert'>
-        <strong>$errorMessage</strong>
-        <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button> 
-    </div>
-    ";
-
-       }
-       
-       ?>
+        if (!empty($errorMessage)) {
+            echo "
+            <div class='alert alert-warning alert-dismissible fade show' role='alert'>
+                <strong>$errorMessage</strong>
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button> 
+            </div>
+            ";
+        }
+        ?>
         <form method= "post">
             <input type="hidden" name="id" value="<?php echo $id;?>">
             <div class= "row mb-3">

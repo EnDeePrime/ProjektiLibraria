@@ -51,7 +51,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between">
                     <h5>Books</h5>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookModal">Add Book</button>
+                    <a class="btn btn-primary" href="create_book.php" type="button">Add Book</a>
                 </div>
                 <div class="card-body">
                     <table class="table table-striped">

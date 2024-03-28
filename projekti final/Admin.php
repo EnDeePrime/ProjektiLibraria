@@ -127,7 +127,7 @@
              <div class="card">
             <div class="card-header d-flex justify-content-between">
             <h5>Borrowers</h5>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBorrowerModal">Add Borrower</button>
+            <a class="btn btn-primary" href="create_borrower.php" type="button">Add Borrower</a>
              </div>
             <div class="card-body">
             <table class="table table-striped">
@@ -135,11 +135,13 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Address</th>
                         <th>Phone</th>
-                        <th>Action</th>
+                       
                         <th>Email</th>
                         <th>Password</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -168,8 +170,8 @@
                                     echo "<td>" . $borrower['bpassword'] . "</td>";
                                    
                                     echo "<td>";
-                                    echo "<a href='edit_book.php?id="  . "' class='btn btn-sm btn-primary'>Edit</a>";
-                                    echo "<a href='delete_book.php?id="  . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                    echo "<a href='edit_borrower.php?id="  . $borrower['borrower_id'] . "' class='btn btn-sm btn-primary'>Edit</a>"; 
+                                    echo "<a href='delete_borrower.php?id="  .  $borrower['borrower_id'] . "' class='btn btn-sm btn-danger'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
                         
@@ -438,6 +440,7 @@
                     </div>
                 </div>
     <!-- Add Book Modal -->
+    
     <!-- Your HTML code -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"></script>

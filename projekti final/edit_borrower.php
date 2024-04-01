@@ -11,7 +11,7 @@ $connection = new mysqli($host, $user, $pass, $db);
 if ($connection->connect_error) {
     die("Connection failed: " . $connection->connect_error);
 }
-
+$sql="";
 $id = "";
 $errorMessage = "";
 $succesMessage = "";
@@ -58,22 +58,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $Bphone = $_POST["bphone"];
     
 
-    // Validate form data
-    if (empty($Borrower_id) || empty($Baddress) || empty($Bemail) || empty($Bfirstname) || empty($Blastname) || empty($Bpassword) || empty($Bphone)) {
-        $errorMessage = "All the fields are required";
+    // POST method - Update the borrower data
+$Borrower_id = $_POST["borrower_id"];
+$Baddress = $_POST["baddress"];
+$Bemail = $_POST["bemail"];
+$Bfirstname = $_POST["bfirstName"];
+$Blastname = $_POST["blastName"];
+$Bpassword = $_POST["bpassword"];
+$Bphone = $_POST["bphone"];
+
+// Debugging
+echo "Borrower ID: " . $Borrower_id;
+
+// Validate form data
+if ( empty($Baddress) || empty($Bemail) || empty($Bfirstname) || empty($Blastname) || empty($Bpassword) || empty($Bphone)) {
+    $errorMessage = "All the fields are required";
+} else {
+    // Update the borrower data in the database
+    $sql = "UPDATE borrowers SET baddress = '$Baddress', bemail = '$Bemail', bfirstName = '$Bfirstname', blastName = '$Blastname', bpassword = '$Bpassword', bphone = '$Bphone' WHERE borrower_id = $Borrower_id";
+    echo $sql; // Debugging
+    $result = $connection->query($sql);
+    if (!$result) {
+        $errorMessage = "Invalid query: " . $connection->error;
     } else {
-        // Update the borrower data in the database
-        $sql = "UPDATE borrowers SET baddress = '$Baddress', bemail = '$Bemail', bfirstName = '$Bfirstname', blastName = '$Blastname', bpassword = '$Bpassword', bphone = '$Bphone' WHERE borrower_id = $id";        $result = $connection->query($sql);
-        if (!$result) {
-            $errorMessage = "Invalid query: " . $connection->error;
-        } else {
-            $succesMessage = "Borrower Updated Correctly";
-            header("location: Admin.php#
-            ");
-            exit;
-        }
+        $succesMessage = "Borrower Updated Correctly";
+        header("location: Admin.php");
+        exit;
     }
 }
+    }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">

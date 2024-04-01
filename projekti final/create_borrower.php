@@ -44,7 +44,7 @@ do{
         $errorMessage = "All the fields are requred";
         break;
     }
-    //add new Book  to database
+    //add new Borrower  to database
 
     $sql = "INSERT INTO borrowers ( baddress ,bemail, bfirstname, blastname, bpassword, bphone)" .
     "VALUES ( '$Baddress','$Bemail','$Bfirstname','$Blastname', '$Bpassword', '$Bphone')";

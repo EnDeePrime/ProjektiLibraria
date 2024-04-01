@@ -163,8 +163,8 @@
                                     echo "<tr>";
                                     echo "<td>" . $borrower['borrower_id'] . "</td>";
                                     echo "<td>" . $borrower['bfirstName'] . "</td>";
-                                    echo "<td>" . $borrower['blastName'] . "</td>"; // Now 'author' refers to the author name
-                                    echo "<td>" . $borrower['baddress'] . "</td>"; // Now 'category' refers to the category name
+                                    echo "<td>" . $borrower['blastName'] . "</td>"; 
+                                    echo "<td>" . $borrower['baddress'] . "</td>"; 
                                     echo "<td>" . $borrower['bphone'] . "</td>";
                                     echo "<td>" . $borrower['bemail'] . "</td>";
                                     echo "<td>" . $borrower['bpassword'] . "</td>";
@@ -261,8 +261,7 @@
              <div class="card">
             <div class="card-header d-flex justify-content-between">
             <h5>Staff</h5>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBorrowerModal">Add Borrower</button>
-             </div>
+            <a class="btn btn-primary" href="create_staff.php" type="button">Add Staff</a>             </div>
             <div class="card-body">
             <table class="table table-striped">
                 <thead>
@@ -299,8 +298,8 @@
                                     echo "<tr>";
                                     echo "<td>" . $staff['staff_id'] . "</td>";
                                     echo "<td>" . $staff['sfirstName'] . "</td>";
-                                    echo "<td>" . $staff['slastName'] . "</td>"; // Now 'author' refers to the author name
-                                    echo "<td>" . $staff['shireDate'] . "</td>"; // Now 'category' refers to the category name
+                                    echo "<td>" . $staff['slastName'] . "</td>"; 
+                                    echo "<td>" . $staff['hiredate'] . "</td>"; 
                                     echo "<td>" . $staff['saddress'] . "</td>";
                                     echo "<td>" . $staff['sphone'] . "</td>";
                                     echo "<td>" . $staff['semail'] . "</td>";
@@ -308,8 +307,8 @@
                                     
                                     echo "<td>";
                                   
-                                    echo "<a href='edit_book.php?id="  . "' class='btn btn-sm btn-primary'>Edit</a>";
-                                    echo "<a href='delete_book.php?id="  . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                    echo "<a href='edit_staff.php?id="  .$staff['staff_id'] . "' class='btn btn-sm btn-primary'>Edit</a>";
+                                    echo "<a href='delete_staff.php?id=" .$staff['staff_id'] ."' class='btn btn-sm btn-danger'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
                         
@@ -317,7 +316,7 @@
                         
                                     }
                                 } else {
-                                    echo "<tr><td colspan='3'>No borrowers found</td></tr>";
+                                    echo "<tr><td colspan='3'>No staff found</td></tr>";
                                 }
                                 
                                 // Close the database connection

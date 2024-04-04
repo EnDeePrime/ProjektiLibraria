@@ -198,7 +198,7 @@
              <div class="card">
             <div class="card-header d-flex justify-content-between">
             <h5>Shelves</h5>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addShelfModal">Add Shelf</button>
+            <a class="btn btn-primary" href="create_shelf.php" type="button">Add Shelf</a>
              </div>
             <div class="card-body">
             <table class="table table-striped">
@@ -233,8 +233,8 @@
                                    
                                    
                                     echo "<td>";
-                                    echo "<a href='edit_book.php?id="  . "' class='btn btn-sm btn-primary'>Edit</a>";
-                                    echo "<a href='delete_book.php?id="  . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                    echo "<a href='edit_shelf.php?id=" . $shelves['shelf_id'] . "' class='btn btn-sm btn-primary'>Edit</a>";
+                                    echo "<a href='delete_shelf.php?id="  . $shelves['shelf_id']. "' class='btn btn-sm btn-danger'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
                         
@@ -242,7 +242,7 @@
                         
                                     }
                                 } else {
-                                    echo "<tr><td colspan='2'>No borrowers found</td></tr>";
+                                    echo "<tr><td colspan='2'>No shelves found</td></tr>";
                                 }
                                 
                                 // Close the database connection
@@ -334,7 +334,7 @@
              <div class="card">
             <div class="card-header d-flex justify-content-between">
             <h5>Categories</h5>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">Add Category</button>
+            <a class="btn btn-primary" href="create_category.php" type="button">Add Borrower</a>
              </div>
             <div class="card-body">
             <table class="table table-striped">
@@ -364,8 +364,8 @@
                                     echo "<td>" . $category['category_id'] . "</td>";
  				                    echo "<td>" . $category['category_name'] . "</td>";
                                     echo "<td>";
-                                    echo "<a href='edit_book.php?id="  . "' class='btn btn-sm btn-primary'>Edit</a>";
-                                    echo "<a href='delete_book.php?id="  . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                    echo "<a href='edit_category.php?id="   . $category['category_id'] . "' class='btn btn-sm btn-primary'>Edit</a>";
+                                    echo "<a href='delete_category.php?id=" . $category['category_id'] .  "' class='btn btn-sm btn-danger'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
                                     }

@@ -386,7 +386,7 @@
              <div class="card">
             <div class="card-header d-flex justify-content-between">
             <h5>Book Copies</h5>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addBookCopy">Add Copy</button>
+            <a class="btn btn-primary" href="create_book_copy.php" type="button">Add Book Copy</a>
              </div>
             <div class="card-body">
             <table class="table table-striped">
@@ -419,10 +419,10 @@
                                     echo "<td>" . $book_copies['copy_id'] . "</td>";
  				                    echo "<td>" . $book_copies['book_id'] . "</td>";
                                      echo "<td>" . $book_copies['condition_of_book'] . "</td>";
-                                     echo "<td>" . $book_copies['status'] . "</td>";
+                                     echo "<td>" . $book_copies['bstatus'] . "</td>";
                                     echo "<td>";
-                                    echo "<a href='edit_book.php?id="  . "' class='btn btn-sm btn-primary'>Edit</a>";
-                                    echo "<a href='delete_book.php?id="  . "' class='btn btn-sm btn-danger'>Delete</a>";
+                                    echo "<a href='edit_book_copy.php?id="   . $book_copies['copy_id'] . "' class='btn btn-sm btn-primary'>Edit</a>";
+                                    echo "<a href='delete_book_copy.php?id=" . $book_copies['copy_id'] .  "' class='btn btn-sm btn-danger'>Delete</a>";
                                     echo "</td>";
                                     echo "</tr>";
                                     }
